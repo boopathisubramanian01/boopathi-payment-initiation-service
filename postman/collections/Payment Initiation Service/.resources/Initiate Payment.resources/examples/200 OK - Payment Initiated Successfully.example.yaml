@@ -1,0 +1,41 @@
+$kind: http-example
+request:
+  url: "{{baseUrl}}/api/v1/payments/initiate"
+  method: POST
+  body:
+    type: json
+    content: |-
+      {
+        "paymentId": "PAY-20260327-010",
+        "debtorAccount": "DE89370400440532013000",
+        "debtorName": "John Doe",
+        "creditorAccount": "FR1420041010050500013M02606",
+        "creditorName": "Jane Smith",
+        "amount": 1500.75,
+        "currency": "EUR",
+        "paymentPurpose": "Invoice Payment",
+        "remittanceInformation": "INV-2024-001",
+        "requestedExecutionDate": "2026-03-28",
+        "priority": "HIGH"
+      }
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "status": "SUCCESS",
+        "httpStatus": 200,
+        "messageId": "550e8400-e29b-41d4-a716-446655440000",
+        "paymentId": "PAY1_1711576384000",
+        "amount": 1000.50,
+        "currency": "EUR",
+        "isoVersion": "pain.001.003.09",
+        "kafkaTopic": "payment.pain001",
+        "mongodbCollection": "payments",
+        "timestamp": "2026-03-27T22:13:04"
+      }
+order: 1000

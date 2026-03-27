@@ -1,0 +1,26 @@
+$kind: http-request
+name: Initiate Payment
+method: POST
+url: '{{baseUrl}}/api/v1/payments/initiate'
+order: 1000
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "paymentId": "PAY20260327001",
+      "debtorAccount": "DE89370400440532013000",
+      "debtorName": "John Doe",
+      "creditorAccount": "FR1420041010050500013M02606",
+      "creditorName": "Jane Smith",
+      "amount": 1000.50,
+      "currency": "EUR",
+      "paymentPurpose": "Invoice Payment",
+      "remittanceInformation": "INV-2024-001",
+      "executionDate": "2026-03-27",
+      "requestedExecutionDate": "2026-03-28",
+      "priority": "NORM"
+    }
+examples: './.resources/Initiate Payment.resources/examples'

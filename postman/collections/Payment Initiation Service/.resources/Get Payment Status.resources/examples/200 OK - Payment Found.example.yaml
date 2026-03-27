@@ -1,0 +1,33 @@
+$kind: http-example
+name: 200 OK - Payment Found
+request:
+  url: '{{baseUrl}}/api/v1/payments/:paymentId'
+  method: GET
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    - key: Content-Type
+      value: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "status": "FOUND",
+        "paymentId": "PAY1_1711576384000",
+        "data": {
+          "paymentId": "PAY20260327001",
+          "debtorAccount": "DE89370400440532013000",
+          "debtorName": "John Doe",
+          "creditorAccount": "FR1420041010050500013M02606",
+          "creditorName": "Jane Smith",
+          "amount": 1000.50,
+          "currency": "EUR",
+          "paymentPurpose": "Invoice Payment",
+          "remittanceInformation": "INV-2024-001",
+          "executionDate": "2026-03-27",
+          "requestedExecutionDate": "2026-03-28",
+          "priority": "NORM"
+        }
+      }
+order: 1000

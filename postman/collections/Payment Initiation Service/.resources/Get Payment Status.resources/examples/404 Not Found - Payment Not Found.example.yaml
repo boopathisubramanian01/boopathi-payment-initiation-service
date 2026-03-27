@@ -1,0 +1,20 @@
+$kind: http-example
+name: 404 Not Found - Payment Not Found
+request:
+  url: '{{baseUrl}}/api/v1/payments/:paymentId'
+  method: GET
+response:
+  statusCode: 404
+  statusText: Not Found
+  headers:
+    - key: Content-Type
+      value: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "status": "ERROR",
+        "code": 404,
+        "message": "Payment not found"
+      }
+order: 2000

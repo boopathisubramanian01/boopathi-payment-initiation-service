@@ -1,0 +1,6 @@
+$kind: http-request
+name: Health Check
+method: GET
+url: '{{baseUrl}}/api/v1/health'
+order: 3000
+examples: './.resources/Health Check.resources/examples'

@@ -1,0 +1,20 @@
+$kind: http-example
+name: 400 Bad Request - Missing paymentId
+request:
+  url: '{{baseUrl}}/api/v1/payments/initiate'
+  method: POST
+response:
+  statusCode: 400
+  statusText: Bad Request
+  headers:
+    - key: Content-Type
+      value: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "status": "ERROR",
+        "code": 400,
+        "message": "Missing required field: paymentId"
+      }
+order: 2000

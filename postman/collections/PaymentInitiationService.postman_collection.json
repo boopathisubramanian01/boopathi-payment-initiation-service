@@ -1,0 +1,53 @@
+{
+  "info": {
+    "name": "Payment Initiation Service",
+    "description": "ISO 20022 PAIN 001 v9 Payment Initiation Service API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "url": { "raw": "http://localhost:8080/api/v1/payments/health" },
+        "description": "Check if the service is running"
+      }
+    },
+    {
+      "name": "Initiate Payment",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": { "raw": "http://localhost:8080/api/v1/payments/initiate" },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"paymentId\": \"PAY-20260327-001\",\n  \"debtorAccount\": \"DE89370400440532013000\",\n  \"debtorName\": \"John Doe\",\n  \"creditorAccount\": \"FR1420041010050500013M02606\",\n  \"creditorName\": \"Jane Smith\",\n  \"amount\": 1500.75,\n  \"currency\": \"EUR\",\n  \"paymentPurpose\": \"Invoice Payment\",\n  \"remittanceInformation\": \"INV-2024-001\",\n  \"requestedExecutionDate\": \"2026-03-28\",\n  \"priority\": \"HIGH\"\n}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "description": "Initiate a new payment. Returns RECEIVED status after Kafka ACK."
+      }
+    },
+    {
+      "name": "Initiate Duplicate Payment (409 expected)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": { "raw": "http://localhost:8080/api/v1/payments/initiate" },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"paymentId\": \"PAY-20260327-001\",\n  \"debtorAccount\": \"DE89370400440532013000\",\n  \"debtorName\": \"John Doe\",\n  \"creditorAccount\": \"FR1420041010050500013M02606\",\n  \"creditorName\": \"Jane Smith\",\n  \"amount\": 1500.75,\n  \"currency\": \"EUR\",\n  \"paymentPurpose\": \"Invoice Payment\",\n  \"remittanceInformation\": \"INV-2024-001\",\n  \"requestedExecutionDate\": \"2026-03-28\",\n  \"priority\": \"HIGH\"\n}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "description": "Resend same paymentId — expects HTTP 409 DUPLICATE response."
+      }
+    },
+    {
+      "name": "Get Payment Status",
+      "request": {
+        "method": "GET",
+        "url": { "raw": "http://localhost:8080/api/v1/payments/PAY-20260327-001" },
+        "description": "Fetch payment status and details by paymentId from MongoDB."
+      }
+    }
+  ]
+}

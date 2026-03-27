@@ -32,6 +32,8 @@ public class Payment {
     private String executionDate;
     private String requestedExecutionDate;
     private String priority;
+    private String debtorRoutingNumber;
+    private String creditorRoutingNumber;
     private PaymentStatus status;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

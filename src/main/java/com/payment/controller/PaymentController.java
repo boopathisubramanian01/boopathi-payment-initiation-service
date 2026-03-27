@@ -89,6 +89,8 @@ public class PaymentController {
                     response.put("amount", payment.getAmount());
                     response.put("currency", payment.getCurrency());
                     response.put("priority", payment.getPriority());
+                    response.put("debtorRoutingNumber", payment.getDebtorRoutingNumber());
+                    response.put("creditorRoutingNumber", payment.getCreditorRoutingNumber());
                     response.put("requestedExecutionDate", payment.getRequestedExecutionDate());
                     response.put("kafkaMessageId", payment.getKafkaMessageId());
                     response.put("createdAt", payment.getCreatedAt());

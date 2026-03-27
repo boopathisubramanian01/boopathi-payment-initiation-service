@@ -164,6 +164,8 @@ public class PaymentService {
                 .executionDate(request.getExecutionDate())
                 .requestedExecutionDate(request.getRequestedExecutionDate())
                 .priority(request.getPriority())
+                .debtorRoutingNumber(request.getDebtorRoutingNumber())
+                .creditorRoutingNumber(request.getCreditorRoutingNumber())
                 .build();
     }
 }

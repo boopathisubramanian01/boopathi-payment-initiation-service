@@ -21,7 +21,7 @@
         "url": { "raw": "http://localhost:8080/api/v1/payments/initiate" },
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"paymentId\": \"PAY-20260327-001\",\n  \"debtorAccount\": \"DE89370400440532013000\",\n  \"debtorName\": \"John Doe\",\n  \"creditorAccount\": \"FR1420041010050500013M02606\",\n  \"creditorName\": \"Jane Smith\",\n  \"amount\": 1500.75,\n  \"currency\": \"EUR\",\n  \"paymentPurpose\": \"Invoice Payment\",\n  \"remittanceInformation\": \"INV-2024-001\",\n  \"requestedExecutionDate\": \"2026-03-28\",\n  \"priority\": \"HIGH\"\n}",
+          "raw": "{\n  \"paymentId\": \"PAY-20260327-001\",\n  \"debtorAccount\": \"DE89370400440532013000\",\n  \"debtorName\": \"John Doe\",\n  \"debtorRoutingNumber\": \"021000021\",\n  \"creditorAccount\": \"FR1420041010050500013M02606\",\n  \"creditorName\": \"Jane Smith\",\n  \"creditorRoutingNumber\": \"026009593\",\n  \"amount\": 1500.75,\n  \"currency\": \"EUR\",\n  \"paymentPurpose\": \"Invoice Payment\",\n  \"remittanceInformation\": \"INV-2024-001\",\n  \"requestedExecutionDate\": \"2026-03-28\",\n  \"priority\": \"HIGH\"\n}",
           "options": { "raw": { "language": "json" } }
         },
         "description": "Initiate a new payment. Returns RECEIVED status after Kafka ACK."
@@ -35,7 +35,7 @@
         "url": { "raw": "http://localhost:8080/api/v1/payments/initiate" },
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"paymentId\": \"PAY-20260327-001\",\n  \"debtorAccount\": \"DE89370400440532013000\",\n  \"debtorName\": \"John Doe\",\n  \"creditorAccount\": \"FR1420041010050500013M02606\",\n  \"creditorName\": \"Jane Smith\",\n  \"amount\": 1500.75,\n  \"currency\": \"EUR\",\n  \"paymentPurpose\": \"Invoice Payment\",\n  \"remittanceInformation\": \"INV-2024-001\",\n  \"requestedExecutionDate\": \"2026-03-28\",\n  \"priority\": \"HIGH\"\n}",
+          "raw": "{\n  \"paymentId\": \"PAY-20260327-001\",\n  \"debtorAccount\": \"DE89370400440532013000\",\n  \"debtorName\": \"John Doe\",\n  \"debtorRoutingNumber\": \"021000021\",\n  \"creditorAccount\": \"FR1420041010050500013M02606\",\n  \"creditorName\": \"Jane Smith\",\n  \"creditorRoutingNumber\": \"026009593\",\n  \"amount\": 1500.75,\n  \"currency\": \"EUR\",\n  \"paymentPurpose\": \"Invoice Payment\",\n  \"remittanceInformation\": \"INV-2024-001\",\n  \"requestedExecutionDate\": \"2026-03-28\",\n  \"priority\": \"HIGH\"\n}",
           "options": { "raw": { "language": "json" } }
         },
         "description": "Resend same paymentId — expects HTTP 409 DUPLICATE response."

@@ -63,4 +63,10 @@ public class PaymentRequest {
     @Builder.Default
     private String priority = "NORM"; // NORM, HIGH, LOW
 
+    @JsonProperty("debtorRoutingNumber")
+    private String debtorRoutingNumber;
+
+    @JsonProperty("creditorRoutingNumber")
+    private String creditorRoutingNumber;
+
 }

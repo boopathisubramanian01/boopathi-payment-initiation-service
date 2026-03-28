@@ -1,5 +1,5 @@
 $kind: http-request
-description: Initiate a new payment. Returns RECEIVED status after Kafka ACK.
+description: Resend same paymentId — expects HTTP 409 DUPLICATE response.
 url: http://localhost:8080/api/v1/payments/initiate
 method: POST
 headers:
@@ -22,4 +22,4 @@ body:
       "requestedExecutionDate": "2026-03-28",
       "priority": "HIGH"
     }
-order: 2000
+order: 3000

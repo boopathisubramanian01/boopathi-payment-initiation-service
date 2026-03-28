@@ -5,7 +5,8 @@ import com.payment.model.Payment;
 import com.payment.model.PaymentRequest;
 import com.payment.service.PaymentService;
 import jakarta.validation.Valid;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,10 +17,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-@Slf4j
 @RestController
 @RequestMapping("/api/v1/payments")
 public class PaymentController {
+
+    private static final Logger log = LoggerFactory.getLogger(PaymentController.class);
 
     @Autowired
     private PaymentService paymentService;
@@ -101,6 +103,9 @@ public class PaymentController {
                     response.put("creditorRoutingNumber", payment.getCreditorRoutingNumber());
                     response.put("requestedExecutionDate", payment.getRequestedExecutionDate());
                     response.put("kafkaMessageId", payment.getKafkaMessageId());
+                    response.put("pain002MessageId", payment.getPain002MessageId());
+                    response.put("pain002StatusReason", payment.getPain002StatusReason());
+                    response.put("pain002ProcessedAt", payment.getPain002ProcessedAt());
                     response.put("createdAt", payment.getCreatedAt());
                     response.put("updatedAt", payment.getUpdatedAt());
 
@@ -118,6 +123,24 @@ public class PaymentController {
         } finally {
             MDC.clear();
         }
+    }
+
+    @GetMapping("/dashboard")
+    public ResponseEntity<Map<String, Object>> getDashboardData(
+            @RequestParam(name = "limit", defaultValue = "25") int limit) {
+        log.info("[API] GET /api/v1/payments/dashboard | limit={}", limit);
+        return ResponseEntity.ok(paymentService.getDashboardData(limit));
+    }
+
+    @PostMapping("/admin/recover")
+    public ResponseEntity<Map<String, Object>> recoverInProgress() {
+        log.info("[API] POST /api/v1/payments/admin/recover | Manual recovery triggered");
+        int recovered = paymentService.recoverInProgressPayments();
+        Map<String, Object> response = new HashMap<>();
+        response.put("status", "SUCCESS");
+        response.put("recovered", recovered);
+        response.put("message", recovered + " in-progress payment(s) moved to ACSC");
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/health")

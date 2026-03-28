@@ -1,0 +1,23 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/payments/initiate"
+method: POST
+body:
+  type: json
+  content: |-
+    {
+      "paymentId": "PAY-VALIDATION-TEST-3",
+      "debtorAccount": "DE89370400440532013000",
+      "debtorName": "John Doe",
+      "creditorAccount": "FR1420041010050500013M02606",
+      "creditorName": "Jane Smith",
+      "amount": 1500.75,
+      "currency": "USD",
+      "paymentPurpose": "Invoice",
+      "requestedExecutionDate": "2026-03-28",
+      "priority": "HIGH",
+      "debtorRoutingNumber": "021000021",
+      "creditorRoutingNumber": "026009593"
+    }
+auth:
+  type: noauth
+order: 2815194365447389

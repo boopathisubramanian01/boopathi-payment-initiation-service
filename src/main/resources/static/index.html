@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Operations Dashboard</title>
+    <style>
+        :root {
+            --bg: #f5efe6;
+            --panel: rgba(255, 252, 247, 0.88);
+            --panel-strong: #fffaf2;
+            --text: #1c1917;
+            --muted: #6b6257;
+            --accent: #0f766e;
+            --accent-soft: #ccfbf1;
+            --danger: #b91c1c;
+            --warning: #b45309;
+            --border: rgba(28, 25, 23, 0.12);
+            --shadow: 0 18px 45px rgba(28, 25, 23, 0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Georgia, "Times New Roman", serif;
+            color: var(--text);
+            background:
+                radial-gradient(circle at top left, rgba(15, 118, 110, 0.18), transparent 28%),
+                radial-gradient(circle at bottom right, rgba(180, 83, 9, 0.16), transparent 24%),
+                linear-gradient(135deg, #f8f4ec 0%, #efe6d8 100%);
+            min-height: 100vh;
+        }
+
+        .shell {
+            width: min(1200px, calc(100% - 32px));
+            margin: 32px auto;
+        }
+
+        .hero {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+
+        .panel {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(12px);
+        }
+
+        .hero-copy {
+            padding: 28px;
+        }
+
+        .eyebrow {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 999px;
+            background: var(--accent-soft);
+            color: var(--accent);
+            font-size: 12px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        h1, h2, h3 {
+            margin: 0;
+            font-weight: 600;
+        }
+
+        h1 {
+            margin-top: 16px;
+            font-size: clamp(32px, 5vw, 54px);
+            line-height: 0.98;
+        }
+
+        .hero-copy p {
+            margin: 16px 0 0;
+            color: var(--muted);
+            font-size: 16px;
+            line-height: 1.6;
+            max-width: 60ch;
+        }
+
+        .search-panel {
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .search-row {
+            display: flex;
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px 16px;
+            border-radius: 14px;
+            border: 1px solid var(--border);
+            background: rgba(255,255,255,0.8);
+            font: inherit;
+        }
+
+        button {
+            border: none;
+            border-radius: 14px;
+            padding: 14px 18px;
+            background: var(--accent);
+            color: white;
+            font: inherit;
+            cursor: pointer;
+        }
+
+        button.secondary {
+            background: #e7e0d4;
+            color: var(--text);
+        }
+
+        .search-result {
+            margin-top: 18px;
+            padding: 16px;
+            border-radius: 18px;
+            background: var(--panel-strong);
+            min-height: 120px;
+            border: 1px solid var(--border);
+        }
+
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .metric {
+            padding: 18px;
+        }
+
+        .metric .label {
+            color: var(--muted);
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .metric .value {
+            font-size: 34px;
+            margin-top: 10px;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 0.78fr 1.22fr;
+            gap: 20px;
+        }
+
+        .status-breakdown,
+        .payments-table {
+            padding: 24px;
+        }
+
+        .status-list {
+            margin-top: 18px;
+            display: grid;
+            gap: 12px;
+        }
+
+        .status-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 16px;
+            border-radius: 16px;
+            background: rgba(255,255,255,0.7);
+            border: 1px solid var(--border);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 18px;
+            font-size: 14px;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 12px 10px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+        }
+
+        th {
+            color: var(--muted);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .pill {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 600;
+            background: #ece7df;
+        }
+
+        .pill.RJCT, .pill.CANC {
+            background: #fee2e2;
+            color: var(--danger);
+        }
+
+        .pill.PDNG, .pill.PROCESSING, .pill.STORED, .pill.KAFKA_SENT, .pill.VALIDATED {
+            background: #ffedd5;
+            color: var(--warning);
+        }
+
+        .pill.ACSC, .pill.ACSP, .pill.ACCP, .pill.ACTC, .pill.RCVD {
+            background: #d1fae5;
+            color: #166534;
+        }
+
+        .muted {
+            color: var(--muted);
+        }
+
+        .empty {
+            padding: 24px 0;
+            color: var(--muted);
+        }
+
+        @media (max-width: 980px) {
+            .hero,
+            .content,
+            .metrics {
+                grid-template-columns: 1fr;
+            }
+
+            .search-row {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="shell">
+    <section class="hero">
+        <div class="panel hero-copy">
+            <span class="eyebrow">Operations Console</span>
+            <h1>Payments at a glance.</h1>
+            <p>Track how many payments were received, inspect the live ISO 20022 status mix, and search a payment by ID without jumping into MongoDB or Kafka logs.</p>
+        </div>
+        <div class="panel search-panel">
+            <div>
+                <h2>Search Payment</h2>
+                <p class="muted">Enter a payment ID to fetch the latest stored status and pain.002 reason.</p>
+                <div class="search-row">
+                    <input id="paymentIdInput" placeholder="PAY-ISO-1774734783" />
+                    <button id="searchButton">Search</button>
+                    <button id="refreshButton" class="secondary">Refresh</button>
+                    <button id="recoverButton" class="secondary" style="background:#fde68a;color:#78350f;border-color:#fcd34d" title="Force-settle all in-progress payments to ACSC">&#9881; Recover In-Progress</button>
+                </div>
+                <div id="recoverResult" style="margin-top:8px;font-size:0.85rem;display:none"></div>
+            </div>
+            <div id="searchResult" class="search-result muted">No payment selected.</div>
+        </div>
+    </section>
+
+    <section id="metrics" class="metrics"></section>
+
+    <section class="content">
+        <div class="panel status-breakdown">
+            <h3>Status Breakdown</h3>
+            <p class="muted">Current count per stored payment status.</p>
+            <div id="statusList" class="status-list"></div>
+        </div>
+        <div class="panel payments-table">
+            <h3>Recent Payments</h3>
+            <p class="muted">Latest payments ordered by last update.</p>
+            <div id="paymentsTableWrapper"></div>
+        </div>
+    </section>
+</div>
+
+<script>
+    const metrics = document.getElementById('metrics');
+    const statusList = document.getElementById('statusList');
+    const paymentsTableWrapper = document.getElementById('paymentsTableWrapper');
+    const paymentIdInput = document.getElementById('paymentIdInput');
+    const searchButton = document.getElementById('searchButton');
+    const refreshButton = document.getElementById('refreshButton');
+    const searchResult = document.getElementById('searchResult');
+
+    async function loadDashboard() {
+        const response = await fetch('/api/v1/payments/dashboard?limit=25');
+        const data = await response.json();
+        renderMetrics(data.summary || {});
+        renderStatusCounts(data.statusCounts || {});
+        renderPayments(data.payments || []);
+    }
+
+    function renderMetrics(summary) {
+        const items = [
+            ['Total Payments', summary.totalPayments ?? 0],
+            ['Received', summary.received ?? 0],
+            ['In Progress', summary.inProgress ?? 0],
+            ['Completed', summary.completed ?? 0],
+            ['Rejected', summary.rejected ?? 0]
+        ];
+
+        metrics.innerHTML = items.map(([label, value]) => `
+            <article class="panel metric">
+                <div class="label">${label}</div>
+                <div class="value">${value}</div>
+            </article>
+        `).join('');
+    }
+
+    function renderStatusCounts(counts) {
+        const entries = Object.entries(counts);
+        if (!entries.length) {
+            statusList.innerHTML = '<div class="empty">No payment statuses available yet.</div>';
+            return;
+        }
+
+        statusList.innerHTML = entries.map(([status, count]) => `
+            <div class="status-item">
+                <span class="pill ${status}">${status}</span>
+                <strong>${count}</strong>
+            </div>
+        `).join('');
+    }
+
+    function renderPayments(payments) {
+        if (!payments.length) {
+            paymentsTableWrapper.innerHTML = '<div class="empty">No payments found.</div>';
+            return;
+        }
+
+        paymentsTableWrapper.innerHTML = `
+            <table>
+                <thead>
+                    <tr>
+                        <th>Payment ID</th>
+                        <th>Status</th>
+                        <th>Route</th>
+                        <th>Amount</th>
+                        <th>Updated</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${payments.map(payment => `
+                        <tr>
+                            <td>
+                                <strong>${payment.paymentId ?? '-'}</strong><br>
+                                <span class="muted">${payment.debtorName ?? '-'} to ${payment.creditorName ?? '-'}</span>
+                            </td>
+                            <td><span class="pill ${payment.status}">${payment.status ?? '-'}</span></td>
+                            <td class="muted">${payment.pain002StatusReason ?? 'Awaiting pain.002 update'}</td>
+                            <td>${formatAmount(payment.amount, payment.currency)}</td>
+                            <td class="muted">${formatDate(payment.updatedAt || payment.createdAt)}</td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            </table>
+        `;
+    }
+
+    async function searchPayment() {
+        const paymentId = paymentIdInput.value.trim();
+        if (!paymentId) {
+            searchResult.textContent = 'Enter a payment ID to search.';
+            return;
+        }
+
+        searchResult.textContent = 'Loading payment status...';
+
+        const response = await fetch(`/api/v1/payments/${encodeURIComponent(paymentId)}`);
+        const data = await response.json();
+
+        if (!response.ok) {
+            searchResult.innerHTML = `<strong>${data.message || 'Payment not found'}</strong>`;
+            return;
+        }
+
+        searchResult.innerHTML = `
+            <strong>${data.paymentId}</strong><br>
+            <span class="pill ${data.status}">${data.status}</span><br><br>
+            <span class="muted">Amount:</span> ${formatAmount(data.amount, data.currency)}<br>
+            <span class="muted">Requested Date:</span> ${data.requestedExecutionDate || '-'}<br>
+            <span class="muted">pain.002 Reason:</span> ${data.pain002StatusReason || 'Not available yet'}<br>
+            <span class="muted">Last Updated:</span> ${formatDate(data.updatedAt)}
+        `;
+    }
+
+    function formatAmount(amount, currency) {
+        if (amount === null || amount === undefined) {
+            return '-';
+        }
+        return `${amount} ${currency || ''}`.trim();
+    }
+
+    function formatDate(value) {
+        if (!value) {
+            return '-';
+        }
+        const date = new Date(value);
+        return Number.isNaN(date.getTime()) ? value : date.toLocaleString();
+    }
+
+    const recoverButton = document.getElementById('recoverButton');
+    const recoverResult = document.getElementById('recoverResult');
+
+    async function recoverInProgress() {
+        recoverButton.disabled = true;
+        recoverButton.textContent = 'Recovering...';
+        recoverResult.style.display = 'block';
+        recoverResult.textContent = 'Sending recovery request...';
+        try {
+            const response = await fetch('/api/v1/payments/admin/recover', { method: 'POST' });
+            const data = await response.json();
+            recoverResult.style.color = '#15803d';
+            recoverResult.textContent = `✓ ${data.message}`;
+            setTimeout(loadDashboard, 500);
+        } catch (e) {
+            recoverResult.style.color = '#b91c1c';
+            recoverResult.textContent = 'Recovery request failed: ' + e.message;
+        } finally {
+            recoverButton.disabled = false;
+            recoverButton.innerHTML = '&#9881; Recover In-Progress';
+        }
+    }
+
+    searchButton.addEventListener('click', searchPayment);
+    refreshButton.addEventListener('click', loadDashboard);
+    recoverButton.addEventListener('click', recoverInProgress);
+    paymentIdInput.addEventListener('keydown', event => {
+        if (event.key === 'Enter') {
+            searchPayment();
+        }
+    });
+
+    loadDashboard();
+</script>
+</body>
+</html>

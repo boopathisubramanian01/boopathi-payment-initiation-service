@@ -2,8 +2,9 @@ package com.payment.kafka;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.payment.model.Pain001Message;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.RecordMetadata;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -12,9 +13,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.concurrent.TimeUnit;
 
-@Slf4j
 @Service
 public class Pain001Producer {
+
+        private static final Logger log = LoggerFactory.getLogger(Pain001Producer.class);
 
     @Autowired
     private KafkaTemplate<String, String> kafkaTemplate;

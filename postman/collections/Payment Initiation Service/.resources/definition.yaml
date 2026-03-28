@@ -1,5 +1,2 @@
 $kind: collection
-name: Payment Initiation Service
-variables:
-  - key: baseUrl
-    value: 'http://localhost:8080'
+description: ISO 20022 PAIN 001 v9 Payment Initiation Service API

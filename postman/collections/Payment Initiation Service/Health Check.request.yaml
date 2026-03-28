@@ -1,6 +1,5 @@
 $kind: http-request
-name: Health Check
+description: Check if the service is running
+url: http://localhost:8080/api/v1/payments/health
 method: GET
-url: '{{baseUrl}}/api/v1/health'
-order: 3000
-examples: './.resources/Health Check.resources/examples'
+order: 1000

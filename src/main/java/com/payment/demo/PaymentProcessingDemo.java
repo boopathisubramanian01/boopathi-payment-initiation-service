@@ -62,37 +62,37 @@ public class PaymentProcessingDemo {
     }
 
     private static PaymentRequest createPaymentRequest() {
-        return PaymentRequest.builder()
-                .paymentId("DEMO20260327001")
-                .debtorAccount("DE89370400440532013000")
-                .debtorName("John Doe")
-                .creditorAccount("FR1420041010050500013M02606")
-                .creditorName("Jane Smith")
-                .amount(new BigDecimal("1500.75"))
-                .currency("EUR")
-                .paymentPurpose("Invoice Payment for Services")
-                .remittanceInformation("INV-2024-001-March")
-                .requestedExecutionDate("2026-03-28")
-                .priority("HIGH")
-                .build();
+        PaymentRequest request = new PaymentRequest();
+        request.setPaymentId("DEMO20260327001");
+        request.setDebtorAccount("DE89370400440532013000");
+        request.setDebtorName("John Doe");
+        request.setCreditorAccount("FR1420041010050500013M02606");
+        request.setCreditorName("Jane Smith");
+        request.setAmount(new BigDecimal("1500.75"));
+        request.setCurrency("EUR");
+        request.setPaymentPurpose("Invoice Payment for Services");
+        request.setRemittanceInformation("INV-2024-001-March");
+        request.setRequestedExecutionDate("2026-03-28");
+        request.setPriority("HIGH");
+        return request;
     }
 
     private static Payment convertRequestToPayment(PaymentRequest request) {
-        return Payment.builder()
-                .id("507f1f77bcf86cd799439011") // Simulated MongoDB ID
-                .paymentId(request.getPaymentId())
-                .debtorAccount(request.getDebtorAccount())
-                .debtorName(request.getDebtorName())
-                .creditorAccount(request.getCreditorAccount())
-                .creditorName(request.getCreditorName())
-                .amount(request.getAmount())
-                .currency(request.getCurrency())
-                .paymentPurpose(request.getPaymentPurpose())
-                .remittanceInformation(request.getRemittanceInformation())
-                .requestedExecutionDate(request.getRequestedExecutionDate())
-                .priority(request.getPriority())
-                .createdAt(LocalDateTime.now())
-                .build();
+        Payment payment = new Payment();
+        payment.setId("507f1f77bcf86cd799439011"); // Simulated MongoDB ID
+        payment.setPaymentId(request.getPaymentId());
+        payment.setDebtorAccount(request.getDebtorAccount());
+        payment.setDebtorName(request.getDebtorName());
+        payment.setCreditorAccount(request.getCreditorAccount());
+        payment.setCreditorName(request.getCreditorName());
+        payment.setAmount(request.getAmount());
+        payment.setCurrency(request.getCurrency());
+        payment.setPaymentPurpose(request.getPaymentPurpose());
+        payment.setRemittanceInformation(request.getRemittanceInformation());
+        payment.setRequestedExecutionDate(request.getRequestedExecutionDate());
+        payment.setPriority(request.getPriority());
+        payment.setCreatedAt(LocalDateTime.now());
+        return payment;
     }
 
     private static String serializePain001ToJson(Pain001Message message) {

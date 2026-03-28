@@ -41,6 +41,8 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      # Pre-create topics for all services
+      KAFKA_CREATE_TOPICS: "payment.pain001.topic:1:1,payment.status.topic:1:1,payment.engine.topic:1:1"
       CLUSTER_ID: MkU3OEVBNTcwNTJENDM2Qk
     networks:
       - payment-network

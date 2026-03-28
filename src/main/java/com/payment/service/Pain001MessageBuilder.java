@@ -78,6 +78,8 @@ public class Pain001MessageBuilder {
                 .paymentTypeInformation(paymentTypeInfo)
                 .debtor(debtor)
                 .debtorAccount(debtorAccount)
+                .debtorRoutingNumber(payment.getDebtorRoutingNumber())
+                .creditorRoutingNumber(payment.getCreditorRoutingNumber())
                 .creditTransferTransaction(creditTransfer)
                 .build();
 

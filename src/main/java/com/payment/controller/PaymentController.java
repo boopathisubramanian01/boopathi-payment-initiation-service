@@ -6,6 +6,7 @@ import com.payment.model.PaymentRequest;
 import com.payment.service.PaymentService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 @Slf4j
 @RestController
@@ -24,11 +26,12 @@ public class PaymentController {
 
     @PostMapping("/initiate")
     public ResponseEntity<Map<String, Object>> initiatePayment(@Valid @RequestBody PaymentRequest request) {
+        MDC.put("traceId", UUID.randomUUID().toString());
+        MDC.put("paymentId", request.getPaymentId());
+        try {
         log.info("[API] POST /api/v1/payments/initiate | paymentId={} | debtor={} | creditor={} | amount={} {}",
                 request.getPaymentId(), request.getDebtorName(), request.getCreditorName(),
                 request.getAmount(), request.getCurrency());
-
-        try {
             Payment processedPayment = paymentService.processPayment(request);
 
             Map<String, Object> response = new HashMap<>();
@@ -69,11 +72,16 @@ public class PaymentController {
             errorResponse.put("paymentId", request.getPaymentId());
 
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+        } finally {
+            MDC.clear();
         }
     }
 
     @GetMapping("/{paymentId}")
     public ResponseEntity<Map<String, Object>> getPaymentStatus(@PathVariable("paymentId") String paymentId) {
+        MDC.put("traceId", UUID.randomUUID().toString());
+        MDC.put("paymentId", paymentId);
+        try {
         log.info("[API] GET /api/v1/payments/{} | Fetching payment status", paymentId);
 
         return paymentService.getPaymentStatus(paymentId)
@@ -107,6 +115,9 @@ public class PaymentController {
                     error.put("statusCode", 404);
                     return ResponseEntity.status(404).body(error);
                 });
+        } finally {
+            MDC.clear();
+        }
     }
 
     @GetMapping("/health")

@@ -68,6 +68,10 @@ public class Pain001Message {
         private Party debtor;
         @JsonProperty("debtorAccount")
         private Account debtorAccount;
+        @JsonProperty("debtorRoutingNumber")
+        private String debtorRoutingNumber;
+        @JsonProperty("creditorRoutingNumber")
+        private String creditorRoutingNumber;
         @JsonProperty("creditTransferTransaction")
         private CreditTransferTransaction creditTransferTransaction;
     }
